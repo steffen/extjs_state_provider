@@ -1,0 +1,28 @@
+Ext JS State Provider
+===================
+
+A Rails plugin to allow you to decode the Ext JS state information on your server-side.
+
+Use case
+=======
+You save the states of your user's grids (column shown/hidden, column order, column size) on the backend to make them persistent through user sessions.
+If they export data via CSV, you want that the column are in the same order as in their grids.
+You can do that with this plugin.
+
+Example
+=======
+
+columns = ExtJS::CookieProvider.columns(current_user.extjs_states[@component_id])
+csv_data = @records.to_csv(:columns => columns) # The to_csv method is not included in this plugin
+send_csv csv_data, "records"
+
+If you have grid columns that represent multiple fields, like an address column,
+you want those fields to be in separate columns in your CSV file.
+You can do that the following way:
+
+columns = ExtJS::CookieProvider.columns(current_user.extjs_states[@component_id])
+csv_data = @records.to_csv(:columns => columns, { :address => [:street, :zip, :city] })
+send_csv csv_data, "records"
+
+
+Copyright (c) 2010 Steffen Hiller, released under the MIT license
